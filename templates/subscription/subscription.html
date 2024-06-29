@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Upgrade to Pro</h2>
+    <button id="checkout-button">Subscribe for $20/month</button>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        var stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
+        var checkoutButton = document.getElementById('checkout-button');
+        checkoutButton.addEventListener('click', function () {
+            fetch('/subscription/create-checkout-session/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+            })
+                .then(function (response) {
+                    console.log("Fetch response:", response);
+                    return response.json();
+                })
+                .then(function (data) {
+                    console.log("Fetch data:", data);
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        return stripe.redirectToCheckout({sessionId: data.id});
+                    }
+                })
+                .catch(function (error) {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+{% endblock %}

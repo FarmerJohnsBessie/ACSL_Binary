@@ -4,7 +4,6 @@
     color: #800000;
 }
 
-
 .top-img{
     width: 180px;
     display: flex;
@@ -62,4 +61,30 @@
 
 .nav-container{
     max-width: 1200px;
+}
+
+input{
+    width: 100%;
+    padding: 8px; /* Some padding */
+    margin: 8px auto; /* Some space above and below */
+    display: flex; /* To use width 100% */
+    align-content: center;
+    /*border: #444444 2px;*/
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+
+.calc-btn{
+    position: relative;
+    margin: 10px auto;
+    color: white;
+    background: #FF0800;
+    text-align: center;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-self: center;
+    width: 50%;
+    border-radius: 10px;
 }

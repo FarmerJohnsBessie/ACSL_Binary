@@ -10,19 +10,16 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
-    is_premium = models.BooleanField
+    is_premium = models.BooleanField(default=False)
+
     def __str__(self):
         return self.user.username
-
-class Subscription(models.Model):
-    user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    start_date = models.DateTimeField(auto_now_add=True)
-    end_date = models.DateTimeField()
 
 
 class SolverProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     questions_solved = models.ManyToManyField(Question, blank=True)
+
     @property
     def number_of_questions_solved(self):
         return self.questions_solved.count()
@@ -44,3 +41,13 @@ class DailyAPICallCount(models.Model):
 
     def __str__(self):
         return f'{self.user.username}\'s API Call Count for {self.date}'
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    stripe_subscription_id = models.CharField(max_length=255, blank=True)
+    stripe_customer_id = models.CharField(max_length=255, blank=True)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.user.username
