@@ -49,12 +49,16 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'tools' %}">Tool box</a>
             </li>
-
+                    
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'question_generator_homepage' %}">Problem Generator</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'problem_solver' %}">Problem Solver</a>
+                {% if request.user.is_authenticated and request.user.profile.is_premium %}
+                    <a class="nav-link" href="{% url 'problem_solver' %}">Problem Solver</a>
+                {% else %}
+                    <a class="nav-link disabled" href="#" aria-disabled="true">Problem Solver</a>
+                {% endif %}
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'study_materials' %}">Study Materials</a>

@@ -87,6 +87,10 @@ footer {
     padding: 5px; /* Add some padding for spacing */
     text-align: center; /* Center the text */
     margin: 10px 0; /* Add some margin */
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Style for the error message text */
@@ -107,8 +111,13 @@ footer {
     padding: 10px;
     background-color: #f1f1f1;
     border: 1px solid #ddd;
-    text-align: left;
     margin-bottom: 10px;
+    display: flex;
+    width: 50%;
+    align-content: center;
+    justify-content: center;
+    position: relative;
+    margin: auto;
 }
 
 .brand {

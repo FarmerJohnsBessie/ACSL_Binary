@@ -2,6 +2,9 @@ from django.urls import path
 from number_system.view import user_views, admin_views, toolbox_views, question_generator_views, extra_views, \
     problem_solver_views, study_materials_views
 from django.contrib.auth.views import PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+from django.contrib.auth import views as auth_views
+from number_system.view.subscription_view import *
+
 
 urlpatterns = [
 
@@ -46,15 +49,27 @@ urlpatterns = [
          name='view_solver_profile'),
     path('register/', user_views.UserRegisterView.as_view(), name='register'),
     path('login/', user_views.UserLoginView.as_view(), name='login'),
-    path('reset-password/', user_views.UserPasswordResetView.as_view(), name='reset_password'),
-    path('reset-password/done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset/done/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    # path('reset-password/', user_views.UserPasswordResetView.as_view(), name='reset_password'),
+    # path('reset-password/done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
+    # path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    # path('reset/done/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('logout/', user_views.logout_user, name='logout'),
+    path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset_form.html'), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'), name='password_reset_complete'),
 
     # =============== Study Materials ===============
     path('study-materials/', study_materials_views.study_materials, name='study_materials'),
     path('study-materials/<str:topic>/', study_materials_views.study_materials_topic, name='study_materials_topic'),
     path('check-answer/<str:topic>/', study_materials_views.check_answer, name='check_answer'),
-# some changes in the branch
+
+    # =============== Subscriptions =================
+    path('subscription/', SubscriptionView.as_view(), name='subscription'),
+    path('subscription/create-checkout-session/', CreateCheckoutSessionView.as_view(), name='create_checkout_session'),
+    path('subscription/success/', SubscriptionSuccessView.as_view(), name='subscription_success'),
+    path('subscription/cancel/', SubscriptionCancelView.as_view(), name='subscription_cancel'),
+    path('stripe/webhook/', stripe_webhook, name='stripe_webhook'),
+
+    # some changes in the branch
 ]

@@ -5,11 +5,15 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from number_system.models import DailyAPICallCount
 from number_system.utils import ACSLQuestionSolver
+from ..models import Profile
 
 
 @csrf_exempt
 def problem_solver(request):
-    return render(request, 'pages/premium/question_solver.html')
+    if request.user.is_authenticated and request.user.profile.is_premium:
+        return render(request, 'pages/premium/question_solver.html')
+    else:
+        return render(request, 'pages/premium/non_premium.html')
 
 
 def ask_question(request):

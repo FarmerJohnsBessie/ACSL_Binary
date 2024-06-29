@@ -34,11 +34,6 @@ body {
     color: #800000;
 }
 
-.login-btn {
-    position: relative;
-    margin: auto;
-}
-
 .acsl-btn {
     position: relative;
 
@@ -108,3 +103,4 @@ input[type="password"]::placeholder {
     display: block; /* Block display to put it on a new line */
     margin-top: 5px; /* Space above the help text */
 }
+

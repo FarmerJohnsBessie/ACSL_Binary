@@ -1,64 +1,67 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Base Calculator{% endblock title%}
+{% block title %}Base Calculator{% endblock title %}
+
+{% block style %}
+        <link rel="stylesheet" href="{% static 'css/toolbox.css'%}">
+{% endblock style %}
 
 {% block content %}
-    <h1>Welcome to Base Calculator</h1>
-    <div class="collapsible-button" onclick="toggleCollapsible()">
-        Instructions
+    <h1 class="title"><b>Base Calculator</b></h1>
+    <div class="tab-content" style="max-width: 500px; padding-left: 40px; padding-right: 40px; margin-bottom: 50px;">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.target_base.label_tag }} 
+            {{ form.target_base }}
+            <p id="latex-output"></p>
+            {{ form.input_expression.label_tag }} 
+            {{ form.input_expression }}
+            <button type="submit" class="btn calc-btn">Calculate</button>
+        </form>
+
+        {% for message in messages %}
+            {% if message.tags == "success" %}
+                <p>{{ message }}</p>
+            {% else %}
+                <div class="error-box">
+                    <p class="error-message">Error: {{ message }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="collapsible-button" onclick="toggleCollapsible()">
+            Instructions
+        </div>
+
+        <div id="collapsibleContent" class="collapsible-content">
+            <h3>What is base calculator:</h3>
+            <p>
+                Base calculator is a calculator that can calculate math expresions with numbers in different bases.
+                This calculator supports bases from 2 to 36. And + - * / % ^ are supported.
+                For example, it can calculate 101(base 2)+3(base 10) and output the answer in base 10 which is 5+3=8.
+            </p>
+            <h3>How to use:</h3>
+            <p>Target Base: Enter the base you want the output to be in</p>
+            <p>Input Expression: Enter the math expression you want to calculate</p>
+            <h3>Formatting tips:</h3>
+            <p>
+                For each number you entered, you need to specify which base it's in.
+                To do this, you first write the number, then write a underscore, then write the base in a curly
+                brackets.
+                For example, to enter 9 in base 2, you write 9_{2}. To enter 101 in base 2, you write 101_{2}.
+            </p>
+            <h3>Sample Expressions:</h3>
+            <p>
+                To calculate 101(base 2)+3(base 10), you enter 101_{2}+3_{10} in the input expression box.
+                To calculate 19(base 8) - A(base 16), you enter 19_{8}-A_{16} in the input expression box.
+            </p>
+        </div>
     </div>
 
-    <!-- Collapsible content -->
-    <div id="collapsibleContent" class="collapsible-content">
-        <h3>What is base calculator:</h3>
-        <p>
-            Base calculator is a calculator that can calculate math expresions with numbers in different bases.
-            This calculator supports bases from 2 to 36. And + - * / % ^ are supported.
-            For example, it can calculate 101(base 2)+3(base 10) and output the answer in base 10 which is 5+3=8.
-        </p>
-        <h3>How to use:</h3>
-        <p>Target Base: Enter the base you want the output to be in</p>
-        <p>Input Expression: Enter the math expression you want to calculate</p>
-        <h3>Formatting tips:</h3>
-        <p>
-            For each number you entered, you need to specify which base it's in.
-            To do this, you first write the number, then write a underscore, then write the base in a curly brackets.
-            For example, to enter 9 in base 2, you write 9_{2}. To enter 101 in base 2, you write 101_{2}.
-        </p>
-        <h3>Sample Expressions:</h3>
-        <p>
-            To calculate 101(base 2)+3(base 10), you enter 101_{2}+3_{10} in the input expression box.
-            To calculate 19(base 8) - A(base 16), you enter 19_{8}-A_{16} in the input expression box.
-        </p>
-    </div>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.target_base.label_tag }} {{ form.target_base }}
-        <p id="latex-output"></p>
-        {{ form.input_expression.label_tag }} {{ form.input_expression }}
-        <p></p>
-        <button type="submit">Calculate</button>
-    </form>
 
-
-
-{#    {% if result_number %}#}
-{#        <p>Result: {{ result_number }}</p>#}
-{#    {% endif %}#}
-    {% for message in messages %}
-        {% if message.tags == "success" %}
-            <p>{{ message }}</p>
-        {% else %}
-            <div class="error-box">
-                <p class="error-message">Error: {{ message }}</p>
-            </div>
-        {% endif %}
-    {% endfor %}
-
-{% endblock content%}
+{% endblock content %}
 
 {% block script %}
-{#    <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>#}
+    {#    <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>#}
     <script src="{% static 'js/latex_processing.js' %}"></script>
 {% endblock script %}
